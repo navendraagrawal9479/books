@@ -5,11 +5,16 @@ import bookRoutes from "./routes/books.js";
 import authRoutes from './routes/users.js';
 import cloudinary from 'cloudinary';
 import morgan from "morgan";
+import helmet from 'helmet';
+import cors from 'cors';
 
 dotenv.config();
 const app = express();
 app.use(express.json());
+app.use(helmet()); // secures HTTP header returned by the express app
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" })); // so that browser blocks no cors
 app.use(morgan("common"));
+app.use(cors());
 app.use("/books", bookRoutes);
 app.use('/', authRoutes);
 cloudinary.config({
