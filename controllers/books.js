@@ -30,8 +30,11 @@ export const getIndividualBook = async (req, res) => {
       throw new Error("Book Not Found.");
     }
 
+    const recommendedBooks = await Book.find({Book_Author: book.Book_Author});
+
     res.status(200).json({
       book: book,
+      recommendedBooks: recommendedBooks
     });
   } catch (err) {
     res.status(404).json({
@@ -118,19 +121,3 @@ export const addBook = async (req, res) => {
   }
 };
 
-export const recommendBook = async (req, res) => {
-  try {
-    const { q } = req.params;
-    const data = await Book.find({
-      Book_Author: { $regex: q, $options: "i" },
-    }).limit(20);
-
-    res.status(200).json({
-      books: data,
-    });
-  } catch (err) {
-    res.status(404).json({
-      message: err.message,
-    });
-  }
-};
