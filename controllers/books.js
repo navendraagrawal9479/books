@@ -77,15 +77,8 @@ export const addBook = async (req, res) => {
       Book_Author,
       Year_Of_Publication,
       Publisher,
-      username,
       price,
     } = req.body;
-
-    const user = await User.find({ username: username });
-
-    if (!user) {
-      throw new Error("No user found.");
-    }
 
     const newBook = new Book({
       Book_Title,
@@ -99,15 +92,6 @@ export const addBook = async (req, res) => {
     });
 
     await newBook.save();
-
-    const userBooks = user.book;
-    userBooks.push(newBook._id);
-
-    const updatedUser = await User.findByIdAndUpdate(
-      user._id,
-      { book: userBooks },
-      { new: true }
-    );
 
     res.status(201).json({
       book: newBook,
