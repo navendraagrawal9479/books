@@ -95,7 +95,6 @@ export const addBook = async (req, res) => {
 
     res.status(201).json({
       book: newBook,
-      user: updatedUser,
       message: "Book Created",
     });
   } catch (err) {
